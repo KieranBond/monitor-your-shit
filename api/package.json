@@ -15,5 +15,9 @@
   "bugs": {
     "url": "https://github.com/KieranBond/monitor-your-shit/issues"
   },
-  "homepage": "https://github.com/KieranBond/monitor-your-shit#readme"
+  "homepage": "https://github.com/KieranBond/monitor-your-shit#readme",
+  "dependencies": {
+    "@octokit/types": "^6.16.5",
+    "octokit": "^1.1.0"
+  }
 }

@@ -1,9 +1,9 @@
 {
   "workspaces": {
-      "packages": [
-        "api",
-        "ui"
-      ]
+    "packages": [
+      "api",
+      "ui"
+    ]
   },
   "name": "monitor-your-shit",
   "description": "monitoring",
