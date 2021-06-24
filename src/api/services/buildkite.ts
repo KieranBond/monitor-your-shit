@@ -8,7 +8,7 @@ export class BuildKiteService {
 
     public hello() {
         fetch(this.baseUrl).then(
-            response => console.log('Hello: ' + response.ok)
+            response => console.log('Hello success: ' + response.ok)
         ).catch(
             response => console.log('Hello: ' + response.ok)
         );
@@ -16,15 +16,15 @@ export class BuildKiteService {
 
     public authenticate() {
         const url = `${this.baseUrl}/v2/user`;
-        fetch('url', {
+        fetch(url, {
             method: 'post',
             headers: new Headers({
                 'Authorization': 'Bearer '+ this.token,
             }),
         }).then( response =>
-            console.log('Status: ' + response.ok)
+            console.log('Status success: ' + response.ok)
         ).catch(response =>
-            console.log('Status: ' + response.ok)
+            console.log('Status: ' + response)
         );
     }
 
