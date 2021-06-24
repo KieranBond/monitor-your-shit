@@ -17,7 +17,7 @@ export class BuildKiteService {
     public authenticate() {
         const url = `${this.baseUrl}/v2/user`;
         fetch(url, {
-            method: 'post',
+            method: 'GET',
             headers: new Headers({
                 'Authorization': 'Bearer '+ this.token,
             }),
