@@ -1,4 +1,5 @@
 import { Octokit } from "octokit";
+import {components} from "@octokit/openapi-types/dist-types/generated/types";
 
 export class GithubService {
 
@@ -22,14 +23,14 @@ export class GithubService {
           return response.data;
     }
 
-    async searchPrs(branchPrefixFilter: string, repoPrefixFilter: string) {
+    async searchPrs(branchPrefixFilter: string, repoPrefixFilter: string) : Promise<components["schemas"]["issue-search-result-item"][]> {
         let head = branchPrefixFilter ? ` head:${branchPrefixFilter}` : '';
 
         let response = await this.octokit.rest.search.issuesAndPullRequests({
             q: `is:open is:pr org:${this.owner}${head}`
           })
 
-          let prs: any[] = [];
+          let prs: components["schemas"]["issue-search-result-item"][] = [];
 
           response.data.items.forEach(issue => {
             if (issue.pull_request == null) return;
@@ -38,7 +39,7 @@ export class GithubService {
             prs.push(issue);
           });
 
-          return prs[0];
+          return prs;
     }
 
     async getPr(repo: string, pullRequest: number) { // graphql request is probably better
