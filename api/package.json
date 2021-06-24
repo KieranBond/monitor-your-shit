@@ -1,15 +1,8 @@
 {
-  "workspaces": {
-      "packages": [
-        "api",
-        "ui"
-      ]
-  },
-  "name": "monitor-your-shit",
-  "description": "monitoring",
+  "name": "monitor-your-shit-api",
   "version": "1.0.0",
+  "description": "api",
   "main": "index.js",
-  "dependencies": {},
   "scripts": {
     "test": "test"
   },
@@ -22,9 +15,5 @@
   "bugs": {
     "url": "https://github.com/KieranBond/monitor-your-shit/issues"
   },
-  "homepage": "https://github.com/KieranBond/monitor-your-shit#readme",
-  "devDependencies": {
-    "@tsconfig/recommended": "^1.0.1",
-    "typescript": "^4.3.4"
-  }
+  "homepage": "https://github.com/KieranBond/monitor-your-shit#readme"
 }
