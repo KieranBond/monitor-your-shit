@@ -39,20 +39,72 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.GithubService = void 0;
 var octokit_1 = require("octokit");
 var GithubService = /** @class */ (function () {
-    function GithubService(baseUrl, token) {
+    function GithubService(token, owner) {
         this.octokit = new octokit_1.Octokit({
             auth: token,
-            //baseUrl: 'https://github.com/api/v3'
         });
+        this.owner = owner;
     }
-    GithubService.prototype.getPullRequests = function (repoPrefix, branchPrefix) {
+    GithubService.prototype.repoPrs = function (repo) {
         return __awaiter(this, void 0, void 0, function () {
+            var response;
             return __generator(this, function (_a) {
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.octokit.rest.pulls.list({
+                            owner: this.owner,
+                            repo: repo,
+                        })];
+                    case 1:
+                        response = _a.sent();
+                        return [2 /*return*/, response.data];
+                }
             });
         });
     };
-    GithubService.prototype.getPullRequestsFromRepo = function (repo) {
+    GithubService.prototype.searchPrs = function (branchPrefixFilter, repoPrefixFilter) {
+        return __awaiter(this, void 0, void 0, function () {
+            var head, org, response, prs;
+            var _this = this;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0:
+                        head = branchPrefixFilter ? " head:" + branchPrefixFilter : '';
+                        org = true ? " org:" + this.owner : '';
+                        return [4 /*yield*/, this.octokit.rest.search.issuesAndPullRequests({
+                                q: "is:open is:pr" + head + org
+                            })];
+                    case 1:
+                        response = _a.sent();
+                        prs = [];
+                        response.data.items.forEach(function (issue) {
+                            if (issue.pull_request == null)
+                                return;
+                            if (repoPrefixFilter && !issue.pull_request.html_url.startsWith("https://github.com/" + _this.owner + "/" + repoPrefixFilter))
+                                return;
+                            prs.push(issue);
+                            issue;
+                        });
+                        return [2 /*return*/, prs[0]];
+                }
+            });
+        });
+    };
+    GithubService.prototype.getPr = function (repo, pullRequest) {
+        return __awaiter(this, void 0, void 0, function () {
+            var data;
+            return __generator(this, function (_a) {
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, this.octokit.rest.pulls.get({
+                            owner: this.owner,
+                            repo: repo,
+                            pull_number: pullRequest
+                        })];
+                    case 1:
+                        data = (_a.sent()).data;
+                        return [2 /*return*/, data];
+                }
+            });
+        });
     };
     return GithubService;
 }());

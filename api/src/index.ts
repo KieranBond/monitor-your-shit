@@ -1,30 +1,7 @@
-import { Octokit } from "octokit";
+import { GithubService } from './services/github'
 
+let api = new GithubService('', 'oneiress');
 
-
-
-
-
-export async function prs() {
-    let response = await octo.rest.pulls.list({
-        owner: "TedShaughnessy",
-        repo: "react-redux-test-renderer",
-      });
-
-      console.log(response.data[0]);
-      //return data;
-}
-
-let octo = new Octokit({
-    auth: '',
-});
-
-
-prs();
-// octo.rest.pulls.list({
-//     owner: "TedShaughnessy",
-//     repo: "react-redux-test-renderer",
-//   }).then((res) => {
-
-//     console.log("pulls-list", res);
-// }).catch(e => console.log(e))
+api.repoPrs('caf-marketmaking-widgets').then(x => {
+    console.log(x.length)
+})
