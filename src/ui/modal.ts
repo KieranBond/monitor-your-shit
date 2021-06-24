@@ -65,8 +65,10 @@ const openSettingsTab = (event: Event) => {
     onClick(event, 'Settings');
 }
 
-document.getElementById("Build-Tab")?.addEventListener("click", openBuildTab);
-document.getElementById("Pull-Requests-Tab")?.addEventListener("click", openPRTab);
-document.getElementById("Favourites-Tab")?.addEventListener("click", openFavouritesTab);
-document.getElementById("Tracking-Tab")?.addEventListener("click", openTrackingTab);
-document.getElementById("Settings-Tab")?.addEventListener("click", openSettingsTab);
+export function hello() {
+    document.getElementById("Build-Tab")?.addEventListener("click", openBuildTab);
+    document.getElementById("Pull-Requests-Tab")?.addEventListener("click", openPRTab);
+    document.getElementById("Favourites-Tab")?.addEventListener("click", openFavouritesTab);
+    document.getElementById("Tracking-Tab")?.addEventListener("click", openTrackingTab);
+    document.getElementById("Settings-Tab")?.addEventListener("click", openSettingsTab);
+}

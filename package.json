@@ -3,26 +3,25 @@
   "description": "monitoring",
   "version": "1.0.0",
   "main": "index.js",
-  "dependencies": {
-    "@octokit/types": "^6.16.5",
-    "octokit": "^1.1.0"
-  },
-  "scripts": {
-    "test": "test",
-    "build": "tsc"
-  },
+  "author": "kieran.bond, ted.shaughnessy",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/KieranBond/monitor-your-shit.git"
   },
-  "author": "kieran.bond, ted.shaughnessy",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/KieranBond/monitor-your-shit/issues"
+  "scripts": {
+    "build": "rollup -c --file dist/bundle.js"
   },
-  "homepage": "https://github.com/KieranBond/monitor-your-shit#readme",
+  "dependencies": {
+    "octokit": "^1.1.0"
+  },
   "devDependencies": {
-    "@tsconfig/recommended": "^1.0.1",
+    "rollup": "^2.52.2",
+    "rollup-plugin-typescript2": "^0.30.0",
+    "@rollup/plugin-commonjs": "^19.0.0",
+    "@rollup/plugin-node-resolve": "^13.0.0",
+    "@octokit/types": "^6.16.5",
+    "rollup-plugin-peer-deps-external": "^2.2.4",
     "ts-loader": "8.3.0",
     "typescript": "^4.3.4",
     "webpack": "^5.40.0",
