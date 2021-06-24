@@ -1,5 +1,4 @@
 {
-  "compilerOptions": {
-	  "extends": "@tsconfig/recommended/tsconfig.json"
-  }
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "build": "tsc --project ./ui || tsc --project ./api"
 }
