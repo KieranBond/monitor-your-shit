@@ -1,3 +1,6 @@
 {
-  "extends": "@tsconfig/recommended/tsconfig.json"
+  "extends": "@tsconfig/recommended/tsconfig.json",
+  "entry": ".src/index.js",
+  "outdir": "./dist/",
+  "module": "es6"
 }
