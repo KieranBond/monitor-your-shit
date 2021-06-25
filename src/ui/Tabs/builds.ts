@@ -11,7 +11,7 @@ const createHtml = (buildData: any[]): string => {
     // sort by repo name - Stole from Ted (don't blame me)
     buildData.sort(function(a, b) {
         let textA = (a.pipeline.description === '' ? a.pipeline.slug : a.pipeline.description).toUpperCase();
-        let textB = (b.pipeline.description === '' ? b.pipeline.slug : b.pipeline.description).toUpperCase();;
+        let textB = (b.pipeline.description === '' ? b.pipeline.slug : b.pipeline.description).toUpperCase();
         return (textA < textB) ? -1 : (textA > textB) ? 1 : 0;
     });
 
