@@ -45,9 +45,9 @@ export class BuildKiteService {
         .catch(response => console.log(`Get all builds failed: ${response.error}`));
     }
 
-    public async getAllBuildsForUser(userId?: string): Promise<any[]> {
+    public async getBuildsForUser(maxCount: number = 15, userId?: string): Promise<any[]> {
         userId = userId ?? this.userId;
-        const url = `${baseUrl}${CommonEndpoints.AllBuilds}?creator=${userId}`;
+        let url = `${baseUrl}${CommonEndpoints.AllBuilds}?creator=${userId}&per_page=${maxCount}`;
         return await fetch(url, {
             method: 'GET',
             headers: new Headers({
