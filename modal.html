@@ -9,6 +9,7 @@
 
         --text-color: rgb(200,200,200);
         --selected-text-color: rgb(100,100,100);
+        --title-text-color: rgb(150,150,150);
         --text-color-green: rgb(100,255,100);
         --text-color-red: rgb(255,100,100);
 
@@ -228,6 +229,28 @@
             margin: 0;
             vertical-align: middle;
         }
+
+
+        #Settings > h2 {
+            color: var(--title-text-color);
+            padding-left: 5px;
+        }
+
+        #Settings > label {
+            width: 25%;
+            display: inline-block;
+            padding-left: 15px;
+        }
+        #Settings > input {
+            width: 60%;
+            display: inline-block;
+            background: var(--tab-bg-color);
+            color: wheat;
+            margin: 1px;
+            border-width: thin;
+            border-color: transparent;
+        }
+
     </style>
   </head>
   <body>

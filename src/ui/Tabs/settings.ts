@@ -40,14 +40,14 @@ function setLocalData(key: StorageKey, value: string) {
 
 async function getDataMakeHtml() {
     return `
-<h2>Github</h2><br>
-<label>token:</label><input type="text" id="github-token" value=${storedData.githubToken}><br>
-<label>owner:</label><input type="text" id="github-owner" value=${storedData.githubOwner}><br>
-<label>repo prefix:</label><input type="text" id="github-repo-prefix" value=${storedData.githubRepoPrefix}><br>
-<label>branch prefix:</label><input type="text" id="github-branch-prefix" value=${storedData.githubBranchPrefix}><br>
-<h2>Buildkite</h2><br>
-<label>token:</label><input type="text" id="buildkite-token" value=${storedData.buildkiteToken}><br>
-<label>user:</label><input type="text" id="buildkite-user" value=${storedData.buildkiteUser}><br>
+<h2>Github</h2>
+<label>Token:</label><input type="text" id="github-token" value=${storedData.githubToken}><br>
+<label>Owner:</label><input type="text" id="github-owner" value=${storedData.githubOwner}><br>
+<label>Repo prefix:</label><input type="text" id="github-repo-prefix" value=${storedData.githubRepoPrefix}><br>
+<label>Branch prefix:</label><input type="text" id="github-branch-prefix" value=${storedData.githubBranchPrefix}><br>
+<h2>Buildkite</h2>
+<label>Token:</label><input type="text" id="buildkite-token" value=${storedData.buildkiteToken}><br>
+<label>User:</label><input type="text" id="buildkite-user" value=${storedData.buildkiteUser}><br><br>
 `;
 }
 
