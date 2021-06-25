@@ -16,10 +16,12 @@ async function getDataMakeHtml() {
         if (status.mergeable_state === 'blocked') {
             let combined = await githubService.getCombinedStatus(repo, status.base.sha);
 
-            if (combined.state === 'success' || combined.statuses.length === 0 && combined.state === 'pending') {
+            if (combined.state === 'success') {
                 state = 'review';
             }
-            if (combined.statuses.length > 0 && combined.state === 'pending') state = 'pending'
+            if (combined.state === 'pending') {
+                state = 'pending';
+            }
         }
 
         return`<a href="${pr.html_url}" target="_blank" class="pr ${state}">
