@@ -12,7 +12,6 @@ const combineUrl = (...args: string[]): string => {
        url.concat(`${arg}/`);
     });
 
-    console.log(`Built url: ${url}`);
     return url;
 };
 
