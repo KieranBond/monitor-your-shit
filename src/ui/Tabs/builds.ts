@@ -4,8 +4,24 @@ import config from "../../../config.json"
 
 const buildKiteService = new BuildKiteService(config.token.buildkite);
 
+const createHtml = (buildData: any[]): string => {
+    let html: string = '';
+
+    buildData.map(build => {
+        html = html.concat(`<div>
+            <p>${build.state}</p>
+            <p>${build.number}</p>
+            <p>${build.pipeline.description}</p>
+            </div>`);
+    });
+
+    return html;
+}
+
 export const openBuildTab = (event: Event) => {
-    buildKiteService.authenticate();
-    displayData(event, 'Builds', () => Promise.resolve('<h1>bye</h1>'));
+    displayData(event, 'Builds', () =>
+                buildKiteService.authenticate()
+                .then(id => buildKiteService.getAllBuildsForUser(id))
+                .then(builds => createHtml(builds)));
 }
 
