@@ -25,6 +25,7 @@ export class BuildKiteService implements Pollable {
                 default:
                     icon = `${imgFolder}red-icon-128.png`;
                     break;
+                case 'running':
                 case 'blocked':
                     icon = `${imgFolder}orange-icon-128.png`;
                     break;
