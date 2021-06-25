@@ -24,10 +24,13 @@ export class BuildKiteService implements Pollable {
                 case 'canceled':
                 default:
                     icon = `${imgFolder}red-icon-128.png`;
+                    break;
                 case 'blocked':
                     icon = `${imgFolder}orange-icon-128.png`;
+                    break;
                 case 'passed':
                     icon = `${imgFolder}green-icon-128.png`;
+                    break;
             }
 
             if(icon !== '')
