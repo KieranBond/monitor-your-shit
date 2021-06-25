@@ -57,6 +57,7 @@
             font-size: 17px;
             font-weight: bold;
             color:inherit;
+            width: 295px;
         }
 
         .tab button:hover {
@@ -251,21 +252,30 @@
             border-color: transparent;
         }
 
+        #Settings-Tab {
+            width: 60px;
+            padding: 0;
+            background-image: url('./images/settings.png');
+            background-repeat: no-repeat;
+            background-size: 35%;
+            background-position: center;
+        }
+
+        #Settings {
+            background-image: url('./images/settings_dark.png');
+        }
+
     </style>
   </head>
   <body>
     <div class="tab">
         <button id="Builds-Tab" class="tablinks">Builds</button>
         <button id="Pull-Requests-Tab" class="tablinks">Pull Requests</button>
-        <button id="Favourites-Tab" class="tablinks">Favourites</button>
-        <button id="Tracking-Tab" class="tablinks">Tracking</button>
-        <button id="Settings-Tab" class="tablinks">Settings</button>
+        <button id="Settings-Tab" class="tablinks"></button>
       </div>
 
     <div id="Pull-Requests" class="tabcontent"></div>
 	<div id="Builds" class="tabcontent"></div>
-	<div id="Favourites" class="tabcontent"></div>
-	<div id="Tracking" class="tabcontent"></div>
 	<div id="Settings" class="tabcontent"></div>
     <script type="module" src="dist/bundle.js"></script>
   </body>
