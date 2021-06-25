@@ -8,9 +8,10 @@ export class BuildKiteService {
         this.token = token;
     }
 
-    public async authenticate(): Promise<boolean> {
+    // Returns UserId
+    public async authenticate(): Promise<string> {
         const url = `${baseUrl}${CommonEndpoints.Authenticate}`;
-        await fetch(url, {
+        return await fetch(url, {
             method: 'GET',
             headers: new Headers({
                 'Authorization': 'Bearer '+ this.token,
@@ -20,19 +21,17 @@ export class BuildKiteService {
             .then( response => {
                 console.log(`Authentication success`);
                 this.userId = response.id;
-                return true;
+                return this.userId;
             })
             .catch(response => {
-                console.log(`Authentication failed: ${response.error}`);
-                return response.ok;
+                console.log(`Authentication failed: ${response.error}`)
+                return '';
             });
-
-        return false;
     }
 
-    public getAllBuilds(): any {
+    public async getAllBuilds(): Promise<any[]> {
         const url = `${baseUrl}${CommonEndpoints.AllBuilds}`;
-        fetch(url, {
+        return await fetch(url, {
             method: 'GET',
             headers: new Headers({
                 'Authorization': 'Bearer '+ this.token,
@@ -44,14 +43,12 @@ export class BuildKiteService {
             return response;
         })
         .catch(response => console.log(`Get all builds failed: ${response.error}`));
-
-        return null;
     }
 
-    public async getAllBuildsForUser(userId?: string): Promise<any> {
+    public async getBuildsForUser(maxCount: number = 15, userId?: string): Promise<any[]> {
         userId = userId ?? this.userId;
-        const url = `${baseUrl}${CommonEndpoints.AllBuilds}?creator=${userId}`;
-        await fetch(url, {
+        let url = `${baseUrl}${CommonEndpoints.AllBuilds}?creator=${userId}&per_page=${maxCount}`;
+        return await fetch(url, {
             method: 'GET',
             headers: new Headers({
                 'Authorization': 'Bearer '+ this.token,
@@ -63,7 +60,5 @@ export class BuildKiteService {
             return response;
         })
         .catch(failure => console.log(`Failed to get all builds for user: `, failure.error));
-
-        return null;
     }
 }
