@@ -23,6 +23,16 @@ export class GithubService {
           return response.data;
     }
 
+    async getCombinedStatus(repo: string, ref: string) {
+        let response = await this.octokit.rest.repos.getCombinedStatusForRef({
+            owner: this.owner,
+            repo,
+            ref
+        });
+
+        return response.data;
+    }
+
     async searchPrs(branchPrefixFilter: string, repoPrefixFilter: string) : Promise<components["schemas"]["issue-search-result-item"][]> {
         let head = branchPrefixFilter ? ` head:${branchPrefixFilter}` : '';
 

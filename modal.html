@@ -177,7 +177,7 @@
             float: right;
         }
 
-        .Review:before {
+        .review:before { /* this needs another api request :/ */
             content: ' ';
             display: inline-block;
             height: 12px;
@@ -185,7 +185,7 @@
             background-color: var(--text-color-green);
         }
 
-        .Blocked:before {
+        .blocked:before, .behind:before, .dirty:before {
             content: ' ';
             display: inline-block;
             height: 12px;
@@ -193,7 +193,7 @@
             background-color: var(--text-color-red);
         }
 
-        .Draft:before {
+        .draft:before {
             content: ' ';
             display: inline-block;
             height: 12px;
@@ -201,7 +201,7 @@
             background-color: rgb(150,150,150);
         }
 
-        .Pending:before {
+        .unknown:before, .pending:before {
             content: ' ';
             display: inline-block;
             height: 12px;
@@ -209,7 +209,7 @@
             background-color: rgb(255, 150, 0);
         }
 
-        .Mergable:before {
+        .clean:before, .has_hooks:before, .unstable:before {
             content: ' ';
             display: inline-block;
             height: 12px;

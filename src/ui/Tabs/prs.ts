@@ -11,8 +11,18 @@ async function getDataMakeHtml() {
         let repoUrlSegs = pr.repository_url.split('/');
         let repo = repoUrlSegs[repoUrlSegs.length-1];
         let status = await githubService.getPr(repo, pr.number)
+        let state = status.mergeable_state
 
-        return`<a href="${pr.html_url}" target="_blank" class="pr ${status.mergeable_state}">
+        if (status.mergeable_state === 'blocked') {
+            let combined = await githubService.getCombinedStatus(repo, status.base.sha);
+
+            if (combined.state === 'success' || combined.statuses.length === 0 && combined.state === 'pending') {
+                state = 'review';
+            }
+            if (combined.statuses.length > 0 && combined.state === 'pending') state = 'pending'
+        }
+
+        return`<a href="${pr.html_url}" target="_blank" class="pr ${state}">
             <p class="pr-title">${pr.title}</p>
             <div class="removed-lines"><pre> --${status.deletions}</pre></div>
             <div class="added-lines"><pre>++${status.additions} </pre></div>
