@@ -1,6 +1,4 @@
 import { displayData } from "../tab";
-import { BuildKiteService } from "../../api/services/buildkite";
-import config from "../../../config.json"
 import {services} from "./settings";
 
 const createHtml = (buildData: any[]): string => {
@@ -31,12 +29,6 @@ const createHtml = (buildData: any[]): string => {
                     <p class='pr-title'>${build.message}</p>
                 </a>`;
     });
-
-    // `<a href="${pr.html_url}" target="_blank" class="pr ${state}">
-    //         <p class="pr-title">${pr.title}</p>
-    //         <div class="removed-lines"><pre> --${status.deletions}</pre></div>
-    //         <div class="added-lines"><pre>++${status.additions} </pre></div>
-    //     </a>`;
 
     return html;
 }

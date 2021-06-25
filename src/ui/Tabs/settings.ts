@@ -21,11 +21,6 @@ function authenticateServices() {
     services.buildkiteService?.authenticate();
 }
 
-function startPolling() {
-    services.buildkiteService?.poll();
-    setTimeout(startPolling, 5000);
-}
-
 function settingUpdateFunc() {
     services.githubService = new GithubService(storedData.githubToken!, storedData.githubOwner!);
     services.buildkiteService = new BuildKiteService(storedData.buildkiteToken!);
@@ -100,7 +95,6 @@ export function getAllLocalData() {
         })
         settingUpdateFunc();
         authenticateServices();
-        startPolling();
     })
 }
 
