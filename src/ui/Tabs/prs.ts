@@ -1,11 +1,8 @@
 import {displayData} from "../tab";
-import {GithubService} from "../../api/services/github";
-import config from "../../../config.json"
-
-const githubService = new GithubService(config.token.github, 'oneiress');
+import {services} from "./settings";
 
 async function getDataMakeHtml() {
-    let data = await githubService.searchPrs('UKMM', '');
+    let data = await services.githubService!.searchPrs('UKMM', '');
 
     // sort by repo name
     data.sort(function(a, b) {
@@ -28,11 +25,11 @@ async function getDataMakeHtml() {
             newHtml += `<a href="${pr.repository_url}" class="repo">${repoName}</a>`
         }
 
-        let status = await githubService.getPr(repo, pr.number)
+        let status = await services.githubService!.getPr(repo, pr.number)
         let state = status.mergeable_state
 
         if (status.mergeable_state === 'blocked') {
-            let combined = await githubService.getCombinedStatus(repo, status.base.sha);
+            let combined = await services.githubService!.getCombinedStatus(repo, status.base.sha);
 
             if (combined.state === 'success') {
                 state = 'review';
