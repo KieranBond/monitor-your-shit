@@ -1,7 +1,7 @@
 
 const loadingHtml = "<h3>Loading...</h3>";
 
-export const displayData = (event: Event, tabContentId: string, fetchAndMakeHtml: () => Promise<string>) => {
+export const displayData = (event: Event, tabContentId: string, fetchAndMakeHtml: () => Promise<string>, eventListeners?: () => void) => {
     const tabContent = document.getElementById(tabContentId)!;
 
     closeTabs();
@@ -9,6 +9,7 @@ export const displayData = (event: Event, tabContentId: string, fetchAndMakeHtml
     setLoading(tabContent);
     fetchAndMakeHtml()
         .then(html => tabContent.innerHTML = html)
+        .then(eventListeners)
 }
 
 function setLoading(tabContent: HTMLElement) {

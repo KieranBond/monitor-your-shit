@@ -2,7 +2,7 @@
     "name": "Monitor Extension",
     "version": "1.0",
     "description": "Buildkite and Github activity",
-    "permissions": ["declarativeContent", "http://localhost/*"],
+    "permissions": ["declarativeContent", "http://localhost/*", "storage"],
       "icons": {
         "128": "images/icon-128.png"
       },
