@@ -8,7 +8,8 @@ enum StorageKey {
     GithubRepoPrefix = "githubRepoPrefix",
     GithubBranchPrefix = "githubBranchPrefix",
     BuildkiteToken = "buildkiteToken",
-    BuildkiteUser = "buildkiteUser"
+    BuildkiteUser = "buildkiteUser",
+    Tracking = "tracking"
 }
 
 type ValueOfStorageKey = `${StorageKey}`
@@ -76,6 +77,7 @@ export const storedData: StoredData = {
     [StorageKey.GithubBranchPrefix]: '',
     [StorageKey.BuildkiteToken]: '',
     [StorageKey.BuildkiteUser]: '',
+    [StorageKey.Tracking]: '',
 }
 
 export const services: {

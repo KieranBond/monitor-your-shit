@@ -37,7 +37,7 @@ const getBuildsForUser = async (maxCount = 1, userId, token) => {
         .catch(failure => console.log(`Failed to get all builds for user: `, failure.error));
 }
 
-const poll = (token, userId) => {
+const poll = (token, userId) => { // todo: save data for display in tracking
     getBuildsForUser(1, userId, token)
         .then( builds => {
             const build = builds[0];
@@ -61,9 +61,24 @@ const poll = (token, userId) => {
                     break;
             }
 
-            if(icon !== '')
+            if(icon !== '') {
                 chrome.action.setIcon({ path: icon});
+                setTracking(build)
+            }
     });
+}
+
+function setTracking(build) {
+    const pipeline = build.pipeline.description === '' ? build.pipeline.slug : build.pipeline.description;
+    const state = build.blocked ? 'step-blocked' : build.state;
+    console.log("saving tracking",build)
+    chrome.storage.local.set({['tracking']: `
+<a href="${build.web_url}" class="repo">${pipeline}</a>
+<a class='pr ${state}' href=${build.web_url} target="_blank">
+<p class='pr-title'>${build.number}</p>
+<p class='pr-title'>${build.message}</p>
+</a>
+`})
 }
 
 chrome.alarms.create({ periodInMinutes: 1 });
