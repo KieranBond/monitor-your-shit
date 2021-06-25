@@ -25,7 +25,9 @@ const createHtml = (buildData: any[]): string => {
             html += `<a href="${build.web_url}" class="repo">${pipeline}</a>`
         }
 
-        html += `<a class='pr ${build.state}' href=${build.web_url} target="_blank">
+        const state = build.blocked ? 'step-blocked' : build.state;
+
+        html += `<a class='pr ${state}' href=${build.web_url} target="_blank">
                     <p class='pr-title'>${build.number}</p>
                     <p class='pr-title'>${build.message}</p>
                 </a>`;
