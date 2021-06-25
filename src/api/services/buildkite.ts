@@ -35,7 +35,7 @@ export class BuildKiteService implements Pollable {
             }
 
             if(icon !== '')
-                chrome.browserAction.setIcon({ path: icon});
+                chrome.action.setIcon({ path: icon});
         });
     }
 
