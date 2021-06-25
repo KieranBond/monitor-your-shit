@@ -1,8 +1,7 @@
 import { displayData } from "../tab";
 import { BuildKiteService } from "../../api/services/buildkite";
 import config from "../../../config.json"
-
-const buildKiteService = new BuildKiteService(config.token.buildkite);
+import {services} from "./settings";
 
 const createHtml = (buildData: any[]): string => {
     if(!buildData || !Array.isArray(buildData)) return '<h1>Failed to load</h1>';
@@ -44,8 +43,8 @@ const createHtml = (buildData: any[]): string => {
 
 export const openBuildTab = (event: Event) => {
     displayData(event, 'Builds', () =>
-                buildKiteService.authenticate()
-                .then(id => buildKiteService.getBuildsForUser(5, id))
+                services.buildkiteService!.authenticate()
+                .then(id => services.buildkiteService!.getBuildsForUser(5, id))
                 .then(builds => createHtml(builds)));
 }
 

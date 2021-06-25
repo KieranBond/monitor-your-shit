@@ -1,5 +1,6 @@
 import {displayData} from "../tab";
 import {GithubService} from "../../api/services/github";
+import {BuildKiteService} from "../../api/services/buildkite";
 
 enum StorageKey {
     GithubToken = "githubToken",
@@ -18,6 +19,7 @@ type StoredData = {
 
 function settingUpdateFunc() {
     services.githubService = new GithubService(storedData.githubToken!, storedData.githubOwner!);
+    services.buildkiteService = new BuildKiteService(storedData.buildkiteToken!);
 }
 
 function setLocalData(key: StorageKey, value: string) {
@@ -73,9 +75,11 @@ export const storedData: StoredData = {
 }
 
 export const services: {
-    githubService: GithubService | undefined
+    githubService: GithubService | undefined,
+    buildkiteService: BuildKiteService | undefined
 } = {
-    githubService: undefined
+    githubService: undefined,
+    buildkiteService: undefined
 }
 
 export function getAllLocalData() {
