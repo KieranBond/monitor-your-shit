@@ -1,11 +1,38 @@
 import {baseUrl, CommonEndpoints} from "./utils/endpoints";
+import { Pollable } from './interfaces';
 
-export class BuildKiteService {
+export class BuildKiteService implements Pollable {
     private readonly token: string;
     private userId: string = '';
 
     constructor(token: string) {
         this.token = token;
+    }
+
+    public poll() {
+        if(!this.token || this.userId === '') return;
+
+        this.getBuildsForUser(1, this.userId).then( builds => {
+            const build = builds[0];
+            const state = build.blocked ? 'blocked' : build.state;
+
+            let icon: string = '';
+            const imgFolder: string = '../../../images/';
+
+            switch(state) {
+                case 'failed':
+                case 'canceled':
+                default:
+                    icon = `${imgFolder}red-icon-128.png`;
+                case 'blocked':
+                    icon = `${imgFolder}orange-icon-128.png`;
+                case 'passed':
+                    icon = `${imgFolder}green-icon-128.png`;
+            }
+
+            if(icon !== '')
+                chrome.browserAction.setIcon({ path: icon});
+        });
     }
 
     // Returns UserId

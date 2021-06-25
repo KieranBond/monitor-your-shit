@@ -17,6 +17,15 @@ type StoredData = {
     [P in ValueOfStorageKey]?: string;
 }
 
+function authenticateServices() {
+    services.buildkiteService?.authenticate();
+}
+
+function startPolling() {
+    services.buildkiteService?.poll();
+    setTimeout(startPolling, 5000);
+}
+
 function settingUpdateFunc() {
     services.githubService = new GithubService(storedData.githubToken!, storedData.githubOwner!);
     services.buildkiteService = new BuildKiteService(storedData.buildkiteToken!);
@@ -90,6 +99,8 @@ export function getAllLocalData() {
             storedData[key as ValueOfStorageKey] = items[key];
         })
         settingUpdateFunc();
+        authenticateServices();
+        startPolling();
     })
 }
 
