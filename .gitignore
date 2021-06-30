@@ -36,5 +36,7 @@ Thumbs.db
 
 # Ignore built ts files
 dist/**/*
+# take bundle to save users building
+!dist/bundle.js
 
 config.json
