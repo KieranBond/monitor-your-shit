@@ -1,5 +1,7 @@
 # Monitor Your Shit
 
+![Alt text](images/readme-image.png?raw=true "extension UI image")
+
 Provides:
 
 - An always visible icon showing the status of your last build
