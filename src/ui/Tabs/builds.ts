@@ -1,6 +1,15 @@
 import { displayData } from "../tab";
 import {services} from "./settings";
 
+export const buildHtmlForBuild = (build: any) => {
+    const state = build.blocked ? 'step-blocked' : build.state;
+
+    return `<a class='pr ${state}' href=${build.web_url} target="_blank">
+                    <p class='pr-title'>${build.number}</p>
+                    <p class='pr-title'>${build.message}</p>
+                </a>`;
+}
+
 const createHtml = (buildData: any[]): string => {
     if(!buildData || !Array.isArray(buildData)) return '<h1>Failed to load</h1>';
 
@@ -22,12 +31,7 @@ const createHtml = (buildData: any[]): string => {
             html += `<a href="${build.web_url}" class="repo">${pipeline}</a>`
         }
 
-        const state = build.blocked ? 'step-blocked' : build.state;
-
-        html += `<a class='pr ${state}' href=${build.web_url} target="_blank">
-                    <p class='pr-title'>${build.number}</p>
-                    <p class='pr-title'>${build.message}</p>
-                </a>`;
+        html += buildHtmlForBuild(build);
     });
 
     return html;

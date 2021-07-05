@@ -9133,6 +9133,10 @@ var openSettingsTab = function (event) {
     }); }); }, listeners);
 };
 
+var buildHtmlForBuild = function (build) {
+    var state = build.blocked ? 'step-blocked' : build.state;
+    return "<a class='pr " + state + "' href=" + build.web_url + " target=\"_blank\">\n                    <p class='pr-title'>" + build.number + "</p>\n                    <p class='pr-title'>" + build.message + "</p>\n                </a>";
+};
 var createHtml = function (buildData) {
     if (!buildData || !Array.isArray(buildData))
         return '<h1>Failed to load</h1>';
@@ -9150,8 +9154,7 @@ var createHtml = function (buildData) {
             pipelineName = pipeline;
             html += "<a href=\"" + build.web_url + "\" class=\"repo\">" + pipeline + "</a>";
         }
-        var state = build.blocked ? 'step-blocked' : build.state;
-        html += "<a class='pr " + state + "' href=" + build.web_url + " target=\"_blank\">\n                    <p class='pr-title'>" + build.number + "</p>\n                    <p class='pr-title'>" + build.message + "</p>\n                </a>";
+        html += buildHtmlForBuild(build);
     });
     return html;
 };
@@ -9163,6 +9166,35 @@ var openBuildTab = function (event) {
     });
 };
 
+var buildHtmlForPR = function (pr) { return __awaiter(void 0, void 0, void 0, function () {
+    var repoUrlSegs, repo, newHtml, status, state, combined;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                repoUrlSegs = pr.repository_url.split('/');
+                repo = repoUrlSegs[repoUrlSegs.length - 1];
+                newHtml = '';
+                return [4 /*yield*/, services.githubService.getPr(repo, pr.number)];
+            case 1:
+                status = _a.sent();
+                state = status.mergeable_state;
+                if (!(status.mergeable_state === 'blocked')) return [3 /*break*/, 3];
+                return [4 /*yield*/, services.githubService.getCombinedStatus(repo, status.base.sha)];
+            case 2:
+                combined = _a.sent();
+                if (combined.state === 'success') {
+                    state = 'review';
+                }
+                if (combined.state === 'pending') {
+                    state = 'pending';
+                }
+                _a.label = 3;
+            case 3:
+                newHtml += "<a href=\"" + pr.html_url + "\" target=\"_blank\" class=\"pr " + state + "\">\n            <p class=\"pr-title\">" + pr.title + "</p>\n            <div class=\"removed-lines\"><pre> --" + status.deletions + "</pre></div>\n            <div class=\"added-lines\"><pre>++" + status.additions + " </pre></div>\n        </a>";
+                return [2 /*return*/, newHtml];
+        }
+    });
+}); };
 function getDataMakeHtml() {
     var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
@@ -9181,9 +9213,9 @@ function getDataMakeHtml() {
                     });
                     repoName = '';
                     return [4 /*yield*/, Promise.all(data.map(function (pr) { return __awaiter(_this, void 0, void 0, function () {
-                            var repoUrlSegs, repo, newHtml, status, state, combined;
-                            return __generator(this, function (_a) {
-                                switch (_a.label) {
+                            var repoUrlSegs, repo, newHtml, _a;
+                            return __generator(this, function (_b) {
+                                switch (_b.label) {
                                     case 0:
                                         repoUrlSegs = pr.repository_url.split('/');
                                         repo = repoUrlSegs[repoUrlSegs.length - 1];
@@ -9192,24 +9224,9 @@ function getDataMakeHtml() {
                                             repoName = repo;
                                             newHtml += "<a href=\"" + pr.repository_url + "\" class=\"repo\">" + repoName + "</a>";
                                         }
-                                        return [4 /*yield*/, services.githubService.getPr(repo, pr.number)];
-                                    case 1:
-                                        status = _a.sent();
-                                        state = status.mergeable_state;
-                                        if (!(status.mergeable_state === 'blocked')) return [3 /*break*/, 3];
-                                        return [4 /*yield*/, services.githubService.getCombinedStatus(repo, status.base.sha)];
-                                    case 2:
-                                        combined = _a.sent();
-                                        if (combined.state === 'success') {
-                                            state = 'review';
-                                        }
-                                        if (combined.state === 'pending') {
-                                            state = 'pending';
-                                        }
-                                        _a.label = 3;
-                                    case 3:
-                                        newHtml += "<a href=\"" + pr.html_url + "\" target=\"_blank\" class=\"pr " + state + "\">\n            <p class=\"pr-title\">" + pr.title + "</p>\n            <div class=\"removed-lines\"><pre> --" + status.deletions + "</pre></div>\n            <div class=\"added-lines\"><pre>++" + status.additions + " </pre></div>\n        </a>";
-                                        return [2 /*return*/, newHtml];
+                                        _a = newHtml;
+                                        return [4 /*yield*/, buildHtmlForPR(pr)];
+                                    case 1: return [2 /*return*/, _a + (_b.sent())];
                                 }
                             });
                         }); }))];
