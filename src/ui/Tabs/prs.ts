@@ -1,8 +1,8 @@
 import {displayData} from "../tab";
-import {services} from "./settings";
+import {services, storedData} from "./settings";
 
 async function getDataMakeHtml() {
-    let data = await services.githubService!.searchPrs('UKMM', '');
+    let data = await services.githubService!.searchPrs(storedData.githubBranchPrefix ?? '', storedData.githubRepoPrefix ?? '');
 
     // sort by repo name
     data.sort(function(a, b) {

@@ -3052,7 +3052,7 @@ const Endpoints = {
     },
 };
 
-const VERSION$9 = "5.3.2";
+const VERSION$9 = "5.3.3";
 
 function endpointsToMethods(octokit, endpointsMap) {
     const newMethods = {};
@@ -4685,7 +4685,7 @@ async function wrapRequest(state, request, options) {
     return limiter.schedule(request, options);
 }
 
-const VERSION$8 = "3.0.8";
+const VERSION$8 = "3.0.9";
 function retry(octokit, octokitOptions) {
     const state = Object.assign({
         enabled: true,
@@ -5306,7 +5306,7 @@ function createOAuthDeviceAuth(options) {
     });
 }
 
-const VERSION$5 = "1.2.4";
+const VERSION$5 = "1.3.0";
 
 // @ts-nocheck there is only place for one of us in this file. And it's not you, TS
 async function getAuthentication(state) {
@@ -6629,6 +6629,10 @@ function isNotTimeSkewError(error) {
 async function hook$1(state, request, route, parameters) {
     const endpoint = request.endpoint.merge(route, parameters);
     const url = endpoint.url;
+    // Do not intercept request to retrieve a new token
+    if (/\/login\/oauth\/access_token$/.test(url)) {
+        return request(endpoint);
+    }
     if (requiresAppAuth(url.replace(request.endpoint.DEFAULTS.baseUrl, ""))) {
         const { token } = await getAppAuthentication(state);
         endpoint.headers.authorization = `bearer ${token}`;
@@ -6702,7 +6706,7 @@ async function sendRequestWithRetries(state, request, options, createdAt, retrie
     }
 }
 
-const VERSION$3 = "3.5.0";
+const VERSION$3 = "3.5.2";
 
 function createAppAuth(options) {
     if (!options.appId) {
@@ -6901,7 +6905,7 @@ function _defineProperty$1(obj, key, value) {
   return obj;
 }
 
-const VERSION$2 = "3.3.4";
+const VERSION$2 = "3.3.5";
 
 function addEventHandler(state, eventName, eventHandler) {
   if (Array.isArray(eventName)) {
@@ -6923,34 +6927,6 @@ const OAuthAppOctokit = core$1.Octokit.defaults({
   userAgent: `octokit-oauth-app.js/${VERSION$2} ${universalUserAgent.getUserAgent()}`
 });
 
-async function getUserOctokitWithState(state, options) {
-  return state.octokit.auth(_objectSpread2$1(_objectSpread2$1({
-    type: "oauth-user"
-  }, options), {}, {
-    factory(options) {
-      return new state.Octokit({
-        authStrategy: authOauthUser.createOAuthUserAuth,
-        auth: options
-      });
-    }
-
-  }));
-}
-
-function getWebFlowAuthorizationUrlWithState(state, options) {
-  const optionsWithDefaults = _objectSpread2$1(_objectSpread2$1({
-    clientId: state.clientId,
-    request: state.octokit.request
-  }, options), {}, {
-    allowSignup: options.allowSignup || state.allowSignup,
-    scopes: options.scopes || state.defaultScopes
-  });
-
-  return OAuthMethods.getWebFlowAuthorizationUrl(_objectSpread2$1({
-    clientType: state.clientType
-  }, optionsWithDefaults));
-}
-
 async function emitEvent(state, context) {
   const {
     name,
@@ -6968,6 +6944,46 @@ async function emitEvent(state, context) {
       await eventHandler(context);
     }
   }
+}
+
+async function getUserOctokitWithState(state, options) {
+  return state.octokit.auth(_objectSpread2$1(_objectSpread2$1({
+    type: "oauth-user"
+  }, options), {}, {
+    async factory(options) {
+      const octokit = new state.Octokit({
+        authStrategy: authOauthUser.createOAuthUserAuth,
+        auth: options
+      });
+      const authentication = await octokit.auth({
+        type: "get"
+      });
+      await emitEvent(state, {
+        name: "token",
+        action: "created",
+        token: authentication.token,
+        scopes: authentication.scopes,
+        authentication,
+        octokit
+      });
+      return octokit;
+    }
+
+  }));
+}
+
+function getWebFlowAuthorizationUrlWithState(state, options) {
+  const optionsWithDefaults = _objectSpread2$1(_objectSpread2$1({
+    clientId: state.clientId,
+    request: state.octokit.request
+  }, options), {}, {
+    allowSignup: options.allowSignup || state.allowSignup,
+    scopes: options.scopes || state.defaultScopes
+  });
+
+  return OAuthMethods.getWebFlowAuthorizationUrl(_objectSpread2$1({
+    clientType: state.clientType
+  }, optionsWithDefaults));
 }
 
 async function createTokenWithState(state, options) {
@@ -9148,14 +9164,15 @@ var openBuildTab = function (event) {
 };
 
 function getDataMakeHtml() {
+    var _a, _b;
     return __awaiter(this, void 0, void 0, function () {
         var data, repoName, html;
         var _this = this;
-        return __generator(this, function (_a) {
-            switch (_a.label) {
-                case 0: return [4 /*yield*/, services.githubService.searchPrs('UKMM', '')];
+        return __generator(this, function (_c) {
+            switch (_c.label) {
+                case 0: return [4 /*yield*/, services.githubService.searchPrs((_a = storedData.githubBranchPrefix) !== null && _a !== void 0 ? _a : '', (_b = storedData.githubRepoPrefix) !== null && _b !== void 0 ? _b : '')];
                 case 1:
-                    data = _a.sent();
+                    data = _c.sent();
                     // sort by repo name
                     data.sort(function (a, b) {
                         var textA = a.repository_url.toUpperCase();
@@ -9197,7 +9214,7 @@ function getDataMakeHtml() {
                             });
                         }); }))];
                 case 2:
-                    html = _a.sent();
+                    html = _c.sent();
                     return [2 /*return*/, html.join('')];
             }
         });
